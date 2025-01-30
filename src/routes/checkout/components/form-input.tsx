@@ -1,12 +1,6 @@
 import { FC } from "react";
 
-interface IFormInputProps {
-  label: string;
-  name: string;
-  type?: string;
-  formMethods: any;
-  required?: boolean;
-}
+import { IFormInputProps } from "../types";
 
 const FormInput: FC<IFormInputProps> = ({
   label,
@@ -34,6 +28,7 @@ const FormInput: FC<IFormInputProps> = ({
         {...register(name, {
           required: required ? `${name} is required` : false,
         })}
+        placeholder={label}
         id={name}
         className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500"
       />

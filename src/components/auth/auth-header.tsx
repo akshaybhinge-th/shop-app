@@ -1,14 +1,8 @@
 import { FC } from "react";
 import { Link } from "react-router-dom";
+import { IHeaderProps } from "./types";
 
-interface HeaderProps {
-  readonly heading: string;
-  readonly paragraph: string;
-  readonly linkName: string;
-  readonly linkUrl?: string;
-}
-
-const Header: FC<HeaderProps> = ({
+const Header: FC<IHeaderProps> = ({
   heading,
   paragraph,
   linkName,
@@ -33,5 +27,5 @@ const Header: FC<HeaderProps> = ({
       </p>
     </div>
   );
-}
-export default Header
+};
+export default Header;

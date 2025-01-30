@@ -1,12 +1,10 @@
 import { FC, useContext, memo } from "react";
+import { FaStar } from "react-icons/fa";
 import toast from "react-hot-toast";
 
-import { IProduct } from "../types";
+import { IProductItemProps } from "../types";
 import { CartContext } from "../../../providers/cart-provider/cart-context";
 
-interface IProductItemProps {
-  product: IProduct;
-}
 
 const ProductItem: FC<IProductItemProps> = memo(({ product }) => {
   const { dispatch } = useContext(CartContext);
@@ -40,7 +38,8 @@ const ProductItem: FC<IProductItemProps> = memo(({ product }) => {
           <p className="mt-1 text-sm text-gray-500">{product.category}</p>
           <p className="text-sm font-medium text-gray-900">{`$${product.price}`}</p>
           <p className="text-sm text-gray-500">
-            {product.rating.rate} {product.rating.count}
+            <span className="mr-1"><FaStar className="inline -mt-1"/> {product.rating.rate}</span>
+            {`(${product.rating.count})`}
           </p>
           <div className="flex flex-row items-end justify-between">
             <button

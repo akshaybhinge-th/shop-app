@@ -1,10 +1,5 @@
-import React, { FC } from "react";
-
-interface IFormActionProps {
-  handleSubmit: (event: React.FormEvent<HTMLButtonElement>) => void; 
-  action?: "submit" | "button" | "reset";
-  text: string; 
-}
+import { FC } from "react";
+import { IFormActionProps } from "./types";
 
 const FormAction: FC<IFormActionProps> = ({
   handleSubmit,

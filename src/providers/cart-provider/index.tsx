@@ -1,4 +1,4 @@
-import { useReducer, PropsWithChildren, useMemo } from "react";
+import { useReducer, PropsWithChildren, useMemo, FC } from "react";
 import { CartAction, CartState } from "./types";
 import { CartContext, initialState, initialEmptyCart } from "./cart-context";
 
@@ -42,8 +42,21 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
         cartItems: state.cartItems.filter(
           (item) => item.id !== action.payload.id
         ),
-        totalAmount: state.totalAmount - action.payload.price,
-        totalQuantity: state.totalQuantity - 1
+        totalAmount: state.totalAmount - (action.payload.price * action.payload.quantity), // update total amount based on quantity
+        totalQuantity: state.totalQuantity - action.payload.quantity
+      }
+      localStorage.setItem("_cartDetails",JSON.stringify(cartDetails))
+      return {
+        ...state,
+        ...cartDetails,
+      };
+    }
+    case "UPDATE_CART_ITEM": {
+      const updatedCartItems = state.cartItems.map((item) => item.id === action.payload.id ? {...item, quantity: action.payload.quantity} : item)
+      const cartDetails = {
+        cartItems: updatedCartItems,
+        totalAmount: updatedCartItems.reduce((total, item) => total + item.price * item.quantity, 0),
+        totalQuantity: updatedCartItems.reduce((total, item) => total + item.quantity, 0)
       }
       localStorage.setItem("_cartDetails",JSON.stringify(cartDetails))
       return {
@@ -60,14 +73,14 @@ const cartReducer = (state: CartState, action: CartAction): CartState => {
     case "TOGGLE_CART_PANEL":
       return {
         ...state,
-        isCartOpen: !state.isCartOpen,
+        isCartOpen: typeof action.payload === "boolean" ? action.payload : !state.isCartOpen,
       };
     default:
       return state;
   }
 };
 
-export const CartProvider: React.FC<PropsWithChildren<{}>> = ({ children }) => {
+export const CartProvider: FC<PropsWithChildren<{}>> = ({ children }) => {
   const [state, dispatch] = useReducer(cartReducer, initialState);
   const memoizedContextValue = useMemo(() => ({ state, dispatch }), [state, dispatch]);
   return <CartContext.Provider value={memoizedContextValue}>{children}</CartContext.Provider>;

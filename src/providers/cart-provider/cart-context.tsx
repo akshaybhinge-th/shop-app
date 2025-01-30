@@ -1,5 +1,5 @@
+import { createContext, Dispatch } from "react";
 import { CartState, CartAction } from "./types";
-import { createContext } from "react";
 
 export const initialEmptyCart = {
   cartItems: [],
@@ -19,7 +19,7 @@ export const initialState: CartState = {
 
 export const CartContext = createContext<{
   state: CartState;
-  dispatch: React.Dispatch<CartAction>;
+  dispatch: Dispatch<CartAction>;
 }>({
   state: initialState,
   dispatch: () => null,

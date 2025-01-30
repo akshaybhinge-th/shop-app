@@ -1,6 +1,6 @@
-import React from "react";
+import { FC } from "react";
 
-const FormExtra: React.FC = (): JSX.Element => {
+const FormExtra: FC = (): JSX.Element => {
   return (
     <div className="flex items-center justify-between">
       <div className="flex items-center">

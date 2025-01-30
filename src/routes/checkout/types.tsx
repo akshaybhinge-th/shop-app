@@ -7,3 +7,11 @@ export interface ICheckoutFormData {
   zipCode: string;
   country: string;
 }
+
+export interface IFormInputProps {
+  label: string;
+  name: string;
+  type?: string;
+  formMethods: any;
+  required?: boolean;
+}

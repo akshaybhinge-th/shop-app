@@ -6,10 +6,12 @@ import { useCartDrawer } from "../../hooks/cart";
 import { UserAuthContext } from "../../providers/user-auth-provider/user-auth-context";
 import CartDrawer from "../cart-panel/index";
 import toast from "react-hot-toast";
+import { CartContext } from "../../providers/cart-provider/cart-context";
 
 const Header: FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { state: { totalQuantity }} = useContext(CartContext);
   const { toggleCartPanel } = useCartDrawer();
   const { user, setUser } = useContext(UserAuthContext);
 
@@ -57,7 +59,8 @@ const Header: FC = () => {
                 onClick={toggleCartPanel}
                 className="p-1 text-white hover:text-white focus:outline-none focus:ring-offset-gray-800 focus:ring-white"
               >
-                🛒 Cart
+                <span className="text-lg text-white">🛒</span> Cart
+                {totalQuantity > 0 &&<sup className="inline-flex items-center py-0.5 px-1.5 rounded-full text-xs animate-pulse bg-red-500 font-medium text-white">{totalQuantity}</sup>}
               </button>
 
               {/* Login/Logout based on user login Button */}
