@@ -20,6 +20,6 @@ export type CartState = {
 };
 
 export type CartAction = {
-  type: "ADD_ITEM" | "REMOVE_CART_ITEM" | "CLEAR_CART" | "TOGGLE_CART_PANEL";
+  type: "ADD_ITEM" | "REMOVE_CART_ITEM" | "CLEAR_CART" | "TOGGLE_CART_PANEL" | "UPDATE_CART_ITEM";
   payload: ICartItem | boolean | any;
 };

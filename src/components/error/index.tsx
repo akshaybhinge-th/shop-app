@@ -1,10 +1,6 @@
 import { FC } from "react";
 import { Link, useRouteError } from "react-router-dom";
-
-interface IErrorType {
-  status?: number;
-  statusText?: string;
-}
+import { IErrorType } from "./types";
 
 const ErrorComponent: FC = (): JSX.Element => {
   const err = useRouteError() as IErrorType;

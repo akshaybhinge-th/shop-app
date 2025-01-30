@@ -1,31 +1,18 @@
-import React, { useContext, useState } from "react";
+import { ChangeEvent, FC, FormEvent, useContext, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { LOGIN_FIELDS } from "../constants/form-fields.js";
 import { loginByEmail } from "../../../lib/appwrite.js";
 import { UserAuthContext } from "../../../providers/user-auth-provider/user-auth-context.js";
+import { ILoginField, RedirectLocationState } from "../../../components/auth/types.js";
 
 import FormAction from "../../../components/auth/form-action.js";
 import Input from "../../../components/auth/form-Input.js";
 import { useIsUserLoggedIn } from "../../../hooks/auth/user-auth.js";
 
-// Define the type for each field in loginFields
-interface LoginField {
-  id: string;
-  labelText: string;
-  labelFor: string;
-  name: string;
-  type: string;
-  isRequired: boolean;
-  placeholder: string;
-}
-type RedirectLocationState = {
-  redirectTo: Location;
-};
-
 // Type the fields array
-const fields: LoginField[] = LOGIN_FIELDS;
+const fields: ILoginField[] = LOGIN_FIELDS;
 
 // Create an initial state object where each field's value is an empty string
 const initialFieldState: Record<string, string> = {};
@@ -33,7 +20,7 @@ fields.forEach((field) => {
   initialFieldState[field.id] = "";
 });
 
-const Login: React.FC = (): JSX.Element => {
+const Login: FC = (): JSX.Element => {
   const { user, setUser } = useContext(UserAuthContext);
   const isUserLoggedIn = useIsUserLoggedIn();
   const [loginState, setLoginState] =
@@ -42,7 +29,7 @@ const Login: React.FC = (): JSX.Element => {
   const navigate = useNavigate();
 
   // Handle input changes and update state
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setLoginState({ ...loginState, [e.target.id]: e.target.value });
   };
 
@@ -75,7 +62,7 @@ const Login: React.FC = (): JSX.Element => {
   };
 
   // Handle form submission
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     if (isUserLoggedIn) {
       navigate("/");

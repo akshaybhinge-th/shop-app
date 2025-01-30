@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { account } from "../../lib/appwrite";
 
+import { IUserAuthProviderProps } from "../../components/auth/types";
 import { UserAuthContext } from "./user-auth-context";
-
-interface IUserAuthProviderProps {
-  children: React.ReactNode;
-}
 
 export const UserAuthProvider = ({ children }: IUserAuthProviderProps) => {
   const [user, setUser] = useState<object | null>(null);

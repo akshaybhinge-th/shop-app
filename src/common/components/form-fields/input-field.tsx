@@ -1,9 +1,9 @@
-import React from "react";
+import { FC } from "react";
 
 import { IInputProps } from "./types";
 import { Fixed_Input_Class } from "./constants";
 
-const InputTest: React.FC<IInputProps> = ({
+const InputTest: FC<IInputProps> = ({
   handleChange,
   value,
   labelText,

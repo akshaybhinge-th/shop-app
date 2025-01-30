@@ -1,22 +1,12 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FC, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { createAccountByEmail } from "../../../lib/appwrite.js";
+import { ISignupField } from "../../../components/auth/types.js";
 import { SIGNUP_FIELDS } from "../constants/form-fields.js";
+
 import FormAction from "../../../components/auth/form-action.js";
 import Input from "../../../components/auth/form-Input.js";
-
-
-interface ISignupField {
-  id: string;
-  labelText: string;
-  labelFor: string;
-  name: string;
-  type: string;
-  isRequired: boolean;
-  placeholder: string;
-}
-
 
 const fields: ISignupField[] = SIGNUP_FIELDS;
 
@@ -26,7 +16,7 @@ fields.forEach((field) => {
   initialFieldState[field.id] = "";
 });
 
-const Signup: React.FC = (): JSX.Element => {
+const Signup: FC = (): JSX.Element => {
   const [signupState, setSignupState] =
     useState<Record<string, string>>(initialFieldState);
 
@@ -34,10 +24,10 @@ const Signup: React.FC = (): JSX.Element => {
 
   /**
    * Handles input changes and updates the state of the signup form.
-   * @param {React.ChangeEvent<HTMLInputElement>} e - The input change event.
+   * @param {ChangeEvent<HTMLInputElement>} e - The input change event.
    * @returns {void} - No return value.
    */
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setSignupState({ ...signupState, [e.target.id]: e.target.value });
   };
 
@@ -54,11 +44,11 @@ const Signup: React.FC = (): JSX.Element => {
    * Handles form submission for the signup form.
    * Prevents the default form submission behavior, and initiates the account creation process.
    *
-   * @param {React.FormEvent<HTMLFormElement>} e - The form submission event.
+   * @param {FormEvent<HTMLFormElement>} e - The form submission event.
    * @returns {void} - No return value.
    */
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const handleSubmit = (e: FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     createAccount();
   };

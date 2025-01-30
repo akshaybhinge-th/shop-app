@@ -1,7 +1,4 @@
 import { createContext } from "react";
-
-interface IUserAuthContextType {
-  user: object;
-}
+import { IUserAuthContextType } from "../../components/auth/types";
 
 export const UserAuthContext = createContext<IUserAuthContextType | null>(null);

@@ -3,15 +3,15 @@ import { Link, useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import { IProduct } from "../../routes/products/types";
+import { ICartListProps } from "./types";
+
 import { CartContext } from "../../providers/cart-provider/cart-context";
-import { useIsUserLoggedIn } from "../../hooks/auth/user-auth"
+import { useIsUserLoggedIn } from "../../hooks/auth/user-auth";
 
-interface ICartListProps {
-  checkout?: boolean
-  handlePlaceOrder?: () => void
-}
-
-const CartList: FC<ICartListProps> = ({checkout = false, handlePlaceOrder}: ICartListProps) => {
+const CartList: FC<ICartListProps> = ({
+  checkout = false,
+  handlePlaceOrder,
+}: ICartListProps) => {
   const {
     dispatch,
     state: { cartItems, totalAmount },
@@ -31,15 +31,28 @@ const CartList: FC<ICartListProps> = ({checkout = false, handlePlaceOrder}: ICar
   }
 
   /**
+   * Handles the update of an item in the cart.
+   * @param item the item to update in the cart
+   * @param quantity the new quantity of the item
+   */
+  function handleUpdateCartItem(item: IProduct, quantity: number) {
+    item.quantity = quantity;
+    dispatch({
+      type: "UPDATE_CART_ITEM",
+      payload: { ...item, quantity },
+    });
+  }
+
+  /**
    * Toggles the cart panel state.
    * If the user is not logged in, displays an error message prompting login before checkout.
    * Otherwise, dispatches an action to toggle the cart panel state.
    */
 
   function handleToggleCartPanel() {
-    if(!isUserLoggedIn) {
-      toast.error("you must login before proceeding to checkout")
-    } 
+    if (!isUserLoggedIn) {
+      toast.error("you must login before proceeding to checkout");
+    }
     dispatch({
       type: "TOGGLE_CART_PANEL",
       payload: null,
@@ -51,11 +64,11 @@ const CartList: FC<ICartListProps> = ({checkout = false, handlePlaceOrder}: ICar
    * Used in the cart panel
    */
   function handleContinueShopping() {
-    dispatch({type: "TOGGLE_CART_PANEL", payload: null});
-    navigate("/")
+    dispatch({ type: "TOGGLE_CART_PANEL", payload: false });
+    navigate("/");
   }
 
-
+  
   return (
     <>
       <div className="mt-8">
@@ -81,7 +94,21 @@ const CartList: FC<ICartListProps> = ({checkout = false, handlePlaceOrder}: ICar
                       <p className="mt-1 text-sm text-gray-500">
                         {product.category}
                       </p>
-                      <p className="text-gray-500">Qty {product.quantity}</p>
+                      <p className="flex items-center">
+                        {/* Quantity{" "} */}
+                        <input
+                          className="ml-0 w-20 text-center left-0 bg-gray-200 border border-gray-300 text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block"
+                          type="number"
+                          min={1}
+                          value={product.quantity}
+                          onChange={(e) =>
+                            handleUpdateCartItem(
+                              product,
+                              Number(e.target.value)
+                            )
+                          }
+                        />
+                      </p>
                     </div>
                   </div>
                   <div className="flex flex-1 items-end justify-between text-sm">
@@ -107,7 +134,7 @@ const CartList: FC<ICartListProps> = ({checkout = false, handlePlaceOrder}: ICar
             <div className="flex justify-between text-base font-medium text-gray-900">
               <p>Subtotal</p>
               {/* show value to 2 decimal places */}
-              <p>{`$${Math.round(totalAmount * 100)/100}`}</p>
+              <p>{`$${Math.round(totalAmount * 100) / 100}`}</p>
             </div>
             <p className="mt-0.5 text-sm text-gray-500">
               Shipping and taxes calculated at checkout.
